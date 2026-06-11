@@ -1,6 +1,22 @@
 from tkinter import *
-YELLOW = "#f7f5dd"
+from tkinter import messagebox
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def save():
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
+    else:
+        is_ok = messagebox.showinfo(title="Title", message=f"These are the details entered: \nEmail: {email} "
+                                                           f"\nPassword: {password} \nIs it ok to save?")
+
+        if is_ok:
+            with open("data.txt", "a") as data_file:
+                data_file.write(f"{website} | {email} | {password}\n")
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
@@ -32,9 +48,11 @@ password_label.grid(row=3, column=0, sticky="e")
 # Entries
 website_entry = Entry()
 website_entry.grid(row=1, column=1, columnspan=2, sticky="ew")
+website_entry.focus()
 
 email_entry = Entry()
 email_entry.grid(row=2, column=1, columnspan=2, sticky="ew")
+email_entry.insert(0, "annie@mail.com")
 
 password_entry = Entry()
 password_entry.grid(row=3, column=1, sticky="ew")
@@ -43,7 +61,7 @@ password_entry.grid(row=3, column=1, sticky="ew")
 generate_pwd = Button(text="Generate Password")
 generate_pwd.grid(row=3, column=2, sticky="ew")
 
-add = Button(text="Add")
+add = Button(text="Add", command=save)
 add.grid(row=4, column=1, columnspan=2, sticky="ew")
 
 window.mainloop()
